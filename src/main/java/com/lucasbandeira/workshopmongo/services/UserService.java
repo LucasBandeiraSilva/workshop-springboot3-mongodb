@@ -2,10 +2,12 @@ package com.lucasbandeira.workshopmongo.services;
 
 import com.lucasbandeira.workshopmongo.domain.User;
 import com.lucasbandeira.workshopmongo.repository.UserRepository;
+import com.lucasbandeira.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,5 +17,10 @@ public class UserService {
 
     public List<User>findAll(){
         return userRepository.findAll();
+    }
+
+    public User findById(String id){
+        Optional<User>optionalUser = userRepository.findById(id);
+        return optionalUser.orElseThrow(()-> new ObjectNotFoundException("Object not found with id: " + id));
     }
 }
