@@ -27,6 +27,13 @@ public class UserService {
     public User insert(User user ){
         return userRepository.insert(user);
     }
+
+    public void delete (String id){
+        User user = userRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found with id: " + id));
+        userRepository.delete(user);
+    }
+
+
     public User fromDTO( UserDTO userDTO ){
         return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
