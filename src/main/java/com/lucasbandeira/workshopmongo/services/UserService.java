@@ -32,6 +32,17 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found with id: " + id));
         userRepository.delete(user);
     }
+    public User updateUser(User user,String id){
+        Optional<User>optionalUser = userRepository.findById(id);
+        User newUser = optionalUser.orElseThrow(()->new ObjectNotFoundException("Object not found with id: " + id));
+        updateData(newUser,user);
+        return userRepository.save(newUser);
+    }
+
+    private void updateData( User newUser, User user ) {
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+    }
 
 
     public User fromDTO( UserDTO userDTO ){
