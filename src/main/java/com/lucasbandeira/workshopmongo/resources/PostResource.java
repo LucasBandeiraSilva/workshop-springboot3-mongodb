@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,16 @@ public class PostResource {
     public ResponseEntity<List<Post>>findByTitle(@RequestParam(value = "text",defaultValue = "") String text){
         text = URL.decodeParam(text);
         return ResponseEntity.ok(postService.findByTitle(text));
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>>fullSearch( @RequestParam(value = "text",defaultValue = "") String text,
+                                                 @RequestParam(value = "minDate",defaultValue = "")String minDate,
+                                                 @RequestParam(value = "maxDate",defaultValue = "") String maxDate){
+       LocalDate min = URL.convertDate(minDate,LocalDate.of(1970, 1, 1));
+       LocalDate max = URL.convertDate(maxDate,LocalDate.now());
+       text = URL.decodeParam(text);
+        return ResponseEntity.ok(postService.fullSearch(text,min,max));
     }
 
 }
